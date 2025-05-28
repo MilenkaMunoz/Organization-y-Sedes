@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "fe8062a5-b6ba-4c47-9b49-6220f54dba27",
+		"name": "PRS-Organization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33484137"
+	},
+	"item": [
+		{
+			"name": "CrearOrganizacion",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"JASS Central\",\r\n  \"address\": \"Av.Curva Bellavista\",\r\n  \"phone\": \"987654321\",\r\n  \"legalRepresentative\": \"Javier Fatama\",\r\n  \"status\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/organizations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"organizations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListarOrganizacion",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarOrganizacion",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/organizations/6835502dae794c145e7c2ad9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"organizations",
+						"6835502dae794c145e7c2ad9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CrearSede",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "EliminarSede",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "ListarSedes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
