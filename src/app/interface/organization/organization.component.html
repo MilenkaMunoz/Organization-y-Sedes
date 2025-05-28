@@ -1,0 +1,169 @@
+<div class="container">
+  <h2 class="title">📋 Organizaciones </h2>
+
+  <div class="actions">
+    <button class="btn-primary" (click)="abrirAgregarModal()">
+      <i class="fas fa-plus-circle"></i> Agregar
+    </button>
+    <button class="btn-secondary" [ngClass]="{'showing-inactive': !showingActive}" (click)="toggleShowInactive()">
+      <i class="fas fa-eye-slash"></i> {{ showingActive ? 'Ver Inactivas' : 'Ver Activas' }}
+    </button>
+  </div>
+
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Representante Legal</th>
+          <th>Registro</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let org of filteredOrganizations">
+          <td>{{ org.name }}</td>
+          <td>{{ org.address }}</td>
+          <td>{{ org.phone }}</td>
+          <td>{{ org.legalRepresentative }}</td>
+          <td>{{ org.registrationDate | date:'dd/MMM/yyyy' }}</td>
+          <td>
+            <span [ngClass]="{'badge-active': org.status, 'badge-inactive': !org.status}">
+                {{ org.status ? 'Activo' : 'Inactivo' }}
+              </span>
+          </td>
+          <td>
+            <button class="btn-edit" title="Editar" (click)="selectEdit(org)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-delete" title="Eliminar" (click)="eliminarOrganizacion(org.id)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para editar -->
+<div class="modal-backdrop" *ngIf="selectedOrg">
+  <div class="modal">
+    <h3>Editar Organización</h3>
+    <form (ngSubmit)="guardarCambios()" #editForm="ngForm">
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="selectedOrg.name" name="name" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #name="ngModel"/>
+        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="validation-error">
+          <div *ngIf="name?.errors?.['required']">
+            El Nombre es requerido.
+          </div>
+          <div *ngIf="name?.errors?.['pattern']">
+            Solo se permiten letras, espacios, Ñ/ñ y tildes.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Dirección:</label>
+        <input type="text" [(ngModel)]="selectedOrg.address" name="address" required #address="ngModel"/>
+         <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="validation-error">
+            <div *ngIf="address?.errors?.['required']">
+              La Dirección es requerida.
+            </div>
+          </div>
+        </div>
+      <div class="form-group">
+        <label>Teléfono:</label>
+        <input type="text" [(ngModel)]="selectedOrg.phone" name="phone" required pattern="^9\d{8}$" #phone="ngModel"/>
+         <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="validation-error">
+          <div *ngIf="phone?.errors?.['required']">
+            El Teléfono es requerido.
+          </div>
+           <div *ngIf="phone?.errors?.['pattern']">
+              Debe empezar con 9 y tener 9 dígitos (solo números).
+            </div>
+          </div>
+        </div>
+      <div class="form-group">
+        <label>Representante Legal:</label>
+        <input type="text" [(ngModel)]="selectedOrg.legalRepresentative" name="legalRepresentative" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #legalRepresentative="ngModel"/>
+         <div *ngIf="legalRepresentative?.invalid && (legalRepresentative?.dirty || legalRepresentative?.touched)" class="validation-error">
+          <div *ngIf="legalRepresentative?.errors?.['required']">
+            El Representante Legal es requerido.
+          </div>
+           <div *ngIf="legalRepresentative?.errors?.['pattern']">
+              Solo se permiten letras, espacios, Ñ/ñ y tildes.
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary" [disabled]="editForm.invalid">Guardar</button>
+          <button type="button" class="btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<!-- Modal para agregar -->
+<div class="modal-backdrop" *ngIf="showAddModal">
+  <div class="modal">
+    <h3>Agregar Organización</h3>
+    <form (ngSubmit)="agregarOrganizacion()" #addForm="ngForm">
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="newOrg.name" name="name" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #name="ngModel" />
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="validation-error">
+          <div *ngIf="name.errors?.['required']">
+            El Nombre es requerido.
+          </div>
+          <div *ngIf="name.errors?.['pattern']">
+            Solo se permiten letras, espacios, Ñ/ñ y tildes.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Dirección:</label>
+        <input type="text" [(ngModel)]="newOrg.address" name="address" required #address="ngModel"/>
+        <div *ngIf="address.invalid && (address.dirty || address.touched)" class="validation-error">
+          <div *ngIf="address.errors?.['required']">
+            La Dirección es requerida.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono:</label>
+        <input type="text" [(ngModel)]="newOrg.phone" name="phone" required pattern="^9\d{8}$" #phone="ngModel"/>
+         <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="validation-error">
+          <div *ngIf="phone.errors?.['required']">
+            El Teléfono es requerido.
+          </div>
+           <div *ngIf="phone.errors?.['pattern']">
+              Debe empezar con 9 y tener 9 dígitos (solo números).
+            </div>
+         </div>
+      </div>
+      <div class="form-group">
+        <label>Representante Legal:</label>
+        <input type="text" [(ngModel)]="newOrg.legalRepresentative" name="legalRepresentative" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #legalRepresentative="ngModel"/>
+         <div *ngIf="legalRepresentative.invalid && (legalRepresentative.dirty || legalRepresentative.touched)" class="validation-error">
+          <div *ngIf="legalRepresentative.errors?.['required']">
+            El Representante Legal es requerido.
+          </div>
+           <div *ngIf="legalRepresentative.errors?.['pattern']">
+              Solo se permiten letras, espacios, Ñ/ñ y tildes.
+            </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" [disabled]="addForm.invalid">Guardar</button>
+        <button type="button" class="btn-secondary" (click)="cancelarAgregar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+  

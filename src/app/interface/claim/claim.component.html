@@ -1,0 +1,198 @@
+    <div class="dashboard-main">
+        <div class="claims-table-container">
+            <div class="table-header">
+                <h2>Lista de Claims</h2>
+                <button class="btn-primary" (click)="openNewClaimForm()">
+                    <i class="fas fa-plus"></i> Nuevo Claim
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="claims-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let claim of claims">
+                            <td>{{claim.claimId}}</td>
+                            <td>{{claim.claim_date | date:'dd/MM/yyyy'}}</td>
+                            <td>{{claim.claim_type}}</td>
+                            <td>{{claim.description}}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="claim.status.toLowerCase()">
+                                    {{claim.status}}
+                                </span>
+                            </td>
+                            <td class="actions">
+                                <button class="btn-icon-detail" title="Ver detalles" (click)="toggleDetails(claim.claimId)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon-edit" title="Editar" (click)="editClaim(claim)">
+                                    <i class="fas fa-edit"></i> 
+                                </button>
+                                <button class="btn-icon-delete" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                    
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal de detalles -->
+        <div class="modal" *ngIf="showModal && selectedClaim">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Detalles del Claim #{{selectedClaim.claimId}}</h3>
+                    <button class="btn-close" (click)="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="details-section">
+                        <h4>Información General</h4>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="label">ID del Claim:</span>
+                                <span class="value">{{selectedClaim.claimId}}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Fecha de Creación:</span>
+                                <span class="value">{{selectedClaim.claim_date | date:'dd/MM/yyyy'}}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Estado:</span>
+                                <span class="value status-badge" [ngClass]="selectedClaim.status.toLowerCase()">
+                                    {{selectedClaim.status}}
+                                </span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Tipo de Claim:</span>
+                                <span class="value">{{selectedClaim.claim_type}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-section">
+                        <h4>Descripción</h4>
+                        <p>{{selectedClaim.description}}</p>
+                    </div>
+
+                    <div class="details-section" *ngIf="selectedClaim.dataUser">
+                        <h4>Información del Usuario</h4>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="label">Nombre:</span>
+                                <span class="value">{{selectedClaim.dataUser.lastName}}{{selectedClaim.dataUser.firstName}}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Documento:</span>
+                                <span class="value">{{selectedClaim.dataUser.documentNumber}}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Dirección:</span>
+                                <span class="value">{{selectedClaim.dataUser.AddressUsers}}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Teléfono:</span>
+                                <span class="value">{{selectedClaim.dataUser.phone}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-section">
+                        <h4>Historial</h4>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">{{selectedClaim.registration_date | date:'dd/MM/yyyy HH:mm'}}</div>
+                                <div class="timeline-content">
+                                    <span class="status-badge pending">Creado</span>
+                                    <p>Claim registrado</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" *ngIf="selectedClaim.resolution_date">
+                                <div class="timeline-date">{{selectedClaim.resolution_date | date:'dd/MM/yyyy HH:mm'}}</div>
+                                <div class="timeline-content">
+                                    <span class="status-badge" [ngClass]="selectedClaim.status.toLowerCase()">
+                                        {{selectedClaim.status}}
+                                    </span>
+                                    <p>{{selectedClaim.response || 'Sin respuesta'}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal para editar claim -->
+    <div class="modal" *ngIf="showEditModal && selectedEditClaim">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h3>Editar Claim #{{selectedEditClaim.claimId}}</h3>
+        <button class="btn-close" (click)="closeEditModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        </div>
+        <div class="modal-body">
+        <form (ngSubmit)="updateClaim(selectedEditClaim.claimId)">
+            <div class="details-section">
+            <h4>Información General</h4>
+            <div class="details-grid">
+                <div class="detail-item">
+                <span class="label">Fecha:</span>
+               <input type="date" class="form-control"
+       [(ngModel)]="selectedEditClaim.claim_date"
+       [max]="today"
+       name="claim_date" required />
+
+                </div>
+                <div class="detail-item">
+                <span class="label">Estado:</span>
+                <select class="form-control" [(ngModel)]="selectedEditClaim.status" name="status" required>
+                    <option value="PENDING">Pending</option>
+                    <option value="En Proceso">En Proceso</option>
+                    <option value="COMPLETE">Complete</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+                </div>
+                <div class="detail-item">
+                <span class="label">Tipo:</span>
+                <input type="text" class="form-control" [(ngModel)]="selectedEditClaim.claim_type" name="claim_type" required />
+                </div>
+            </div>
+            </div>
+
+            <div class="details-section">
+            <h4>Descripción</h4>
+            <textarea class="form-control" rows="4" [(ngModel)]="selectedEditClaim.description" name="description" required></textarea>
+            </div>
+
+            <div class="details-section">
+            <h4>Respuesta</h4>
+            <textarea class="form-control" rows="3" [(ngModel)]="selectedEditClaim.response" name="response"></textarea>
+            </div>
+
+            <div class="modal-footer">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i> Guardar Cambios
+            </button>
+            <button type="button" class="btn-secondary" (click)="closeEditModal()">
+                Cancelar
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
+    </div>

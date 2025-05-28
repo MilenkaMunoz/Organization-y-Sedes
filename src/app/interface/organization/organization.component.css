@@ -1,0 +1,267 @@
+.container {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 3px solid #2563eb;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: flex-end;
+}
+
+.table {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  border-collapse: collapse;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
+}
+
+th, td {
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #ebf4ff;
+  color: #1d4ed8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+tr:hover {
+  background-color: #f1f5f9;
+}
+
+tr:nth-child(even) {
+  background-color: #f9fbfd;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-primary,
+.btn-secondary {
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+/* Botones de acción */
+.btn-edit {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #1e4ed8;
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Botones principales */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Botones secundarios */
+.btn-secondary {
+  background: #e0ecff;
+  color: #2563eb;
+}
+
+.btn-secondary:hover {
+  background: #d1e3ff;
+  transform: translateY(-1px);
+}
+
+/* Estilos para el fondo oscuro del modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente oscuro */
+  backdrop-filter: blur(4px); /* Efecto de desenfoque (opcional, requiere prefijos para navegadores) */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out; /* Animación de entrada suave */
+}
+
+/* Estilos para la ventana del modal */
+.modal {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px; /* Ancho máximo para evitar que sea demasiado grande en pantallas anchas */
+  position: relative;
+  animation: slideIn 0.3s ease-out; /* Animación de entrada desde arriba */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Estilos para el título del modal */
+.modal h3 {
+  color: #2563eb;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0f0ff;
+  padding-bottom: 0.7rem;
+}
+
+/* Estilos para cada grupo de formulario (label + input) */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block; /* Hace que la etiqueta ocupe su propia línea */
+  margin-bottom: 0.6rem;
+  color: #4a5568; /* Color de texto gris oscuro */
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-group input[type="text"] {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 0.8rem 1rem;
+  border: 1px solid #cbd5e1; /* Borde suave por defecto */
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Estilo para borde rojo si el campo es inválido y ha sido modificado */
+.form-group input[type="text"].ng-invalid.ng-dirty {
+  border-color: #ef4444; /* Rojo */
+  box-shadow: 0 0 0 3px #ef444433; /* Sombra roja suave */
+}
+
+/* Estilo para borde verde si el campo es válido y ha sido modificado */
+.form-group input[type="text"].ng-valid.ng-dirty {
+   border-color: #22c55e; /* Verde */
+   box-shadow: 0 0 0 3px #22c55e33; /* Sombra verde suave */
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb; /* Borde azul al enfocar */
+  box-shadow: 0 0 0 3px #2563eb33; /* Sombra suave azul al enfocar */
+}
+
+/* Estilos para las acciones del modal (botones) */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinea los botones a la derecha */
+  gap: 1rem; /* Espacio entre botones */
+  margin-top: 2rem;
+}
+
+/* Reutiliza los estilos de botones existentes (btn-primary, btn-secondary) */
+/* .modal-actions .btn-primary,
+.modal-actions .btn-secondary {
+  ... (tus estilos existentes)
+} */
+
+.validation-error {
+  color: #ef4444; /* Rojo */
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+/* Estilos para los indicadores de estado */
+.badge-active {
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  font-size: 0.85em;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #155724; /* Verde oscuro */
+  background-color: #d4edda; /* Verde suave */
+}
+
+.badge-inactive {
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  font-size: 0.85em;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #721c24; /* Rojo oscuro */
+  background-color: #f8d7da; /* Rojo suave */
+}
+
+/* Estilos para el botón cuando muestra 'Ver Activas' (es decir, está mostrando INACTIVAS) */
+.btn-secondary.showing-inactive {
+  background: #f8d7da; /* Rojo suave */
+  color: #721c24; /* Rojo oscuro */
+}
+
+.btn-secondary.showing-inactive:hover {
+  background: #f5c6cb; /* Rojo un poco más fuerte en hover */
+}
