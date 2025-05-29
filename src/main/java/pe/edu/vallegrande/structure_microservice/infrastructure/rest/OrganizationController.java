@@ -8,7 +8,7 @@ import pe.edu.vallegrande.structure_microservice.infrastructure.dto.request.Orga
 import pe.edu.vallegrande.structure_microservice.application.services.OrganizationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/organizations")
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class OrganizationController {
         return organizationService.activate(id);
     }
 
-    @PatchMapping("/{id}/deactivate")
+    @PatchMapping("/{id}/desactivate")
     public Mono<Organization> deactivate(@PathVariable String id) {
         return organizationService.deactivate(id);
     }

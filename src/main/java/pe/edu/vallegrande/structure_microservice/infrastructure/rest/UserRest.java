@@ -9,7 +9,6 @@ import pe.edu.vallegrande.structure_microservice.infrastructure.dto.request.User
 import pe.edu.vallegrande.structure_microservice.infrastructure.dto.response.UserResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

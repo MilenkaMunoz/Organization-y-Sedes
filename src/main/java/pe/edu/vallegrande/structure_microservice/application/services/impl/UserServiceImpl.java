@@ -1,6 +1,5 @@
 package pe.edu.vallegrande.structure_microservice.application.services.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import pe.edu.vallegrande.structure_microservice.application.services.UserService;

@@ -11,4 +11,4 @@ public class StructureMicroserviceApplication {
     public static void main(String[] args) {
         SpringApplication.run(StructureMicroserviceApplication.class, args);
     }
-}
+}   

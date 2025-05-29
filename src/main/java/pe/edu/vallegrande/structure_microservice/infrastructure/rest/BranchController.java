@@ -9,7 +9,7 @@ import pe.edu.vallegrande.structure_microservice.infrastructure.dto.request.Bran
 import pe.edu.vallegrande.structure_microservice.infrastructure.dto.response.BranchResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/branches")
 @RequiredArgsConstructor
