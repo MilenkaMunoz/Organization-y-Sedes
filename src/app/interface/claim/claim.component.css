@@ -1,5 +1,4 @@
 .dashboard-main {
-    background: linear-gradient(120deg, #2b5876, #4e4376);
     color: #ffffff;
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
@@ -7,13 +6,10 @@
 }
 
 .claims-table-container {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
+    background: #ffffff;
     padding: 2rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
 }
 
 .table-header {
@@ -66,73 +62,56 @@
 
 .claims-table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 1rem;
-    font-size: 1rem;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: collapse;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
 }
 
-.claims-table th {
-    background: linear-gradient(45deg, #2b5876, #4e4376);
-    color: #fff;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    padding: 1.2rem;
+th,
+td {
+    padding: 0.9rem 1.2rem;
     text-align: left;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
 }
 
-.claims-table th:first-child {
-    border-radius: 10px 0 0 10px;
+th {
+    background: #ebf4ff;
+    color: #1d4ed8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.claims-table th:last-child {
-    border-radius: 0 10px 10px 0;
+tr {
+    transition: background-color 0.2s ease-in-out;
 }
 
-.claims-table td {
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    padding: 1.2rem;
-    transition: all 0.4s ease;
-    border-radius: 10px;
-    position: relative;
+tr:hover {
+    background-color: #f1f5f9;
 }
 
-.claims-table td:first-child {
-    border-radius: 10px 0 0 10px;
-    border-left: 3px solid #4e4376;
+tr:nth-child(even) {
+    background-color: #f9fbfd;
 }
 
-.claims-table td:last-child {
-    border-radius: 0 10px 10px 0;
-}
-
-.claims-table tbody tr:hover td {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilos específicos para cada columna */
-.claims-table td:nth-child(1) { /* ID */
+.claims-table td:nth-child(1) {
     font-weight: 600;
     color: #00c6ff;
     font-family: 'Courier New', monospace;
 }
 
-.claims-table td:nth-child(2) { /* Fecha */
+.claims-table td:nth-child(2) {
     color: #ffd700;
     font-weight: 500;
 }
 
-.claims-table td:nth-child(3) { /* Estado */
+.claims-table td:nth-child(3) {
     font-weight: 600;
 }
 
-.claims-table td:nth-child(4) { /* Descripción */
+.claims-table td:nth-child(4) {
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
@@ -140,132 +119,111 @@
     color: #e0e0e0;
 }
 
-.claims-table td:nth-child(5) { /* Monto */
+.claims-table td:nth-child(5) {
     font-family: 'Courier New', monospace;
     font-weight: 600;
     color: #00ff9d;
 }
 
-.claims-table td:nth-child(6) { /* Acciones */
+.claims-table td:nth-child(6) {
     text-align: center;
     min-width: 150px;
 }
 
-/* Mejoras en los badges de estado */
 .status-badge {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.status-badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-    pointer-events: none;
+    display: inline-block;
+    padding: 0.3em 0.7em;
+    font-size: 0.85em;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-badge.pending {
-    background: linear-gradient(45deg, #ffd700, #ffa500);
-    color: #fff;
+    background-color: #fff3cd;
+    color: #856404;
 }
 
 .status-badge.complete {
-    background: linear-gradient(45deg, #00b09b, #96c93d);
-    color: #fff;
+    background-color: #d4edda;
+    color: #155724;
 }
 
 .status-badge.rejected {
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
-    color: #fff;
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
-/* Mejoras en los botones de acción */
 .actions {
     display: flex;
     gap: 0.8rem;
     justify-content: center;
 }
 
-.btn-icon {
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
+.actions .btn-edit,
+.actions .btn-delete,
+.actions .btn-primary,
+.actions .btn-success,
+.actions .btn-secondary {
     border: none;
-    color: white;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-right: 0.5rem;
 }
 
-.btn-icon::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-    pointer-events: none;
+.actions .btn-edit {
+    background: #2563eb;
+    color: white;
 }
 
-.btn-icon:hover {
-    transform: translateY(-3px) scale(1.05);
+.actions .btn-success {
+    background-color: #22c55e;
+    color: white;
 }
 
-.btn-icon-detail {
-    background: linear-gradient(45deg, #4b6cb7, #182848);
+.actions .btn-edit:hover {
+    background: #1e4ed8;
+    transform: scale(1.05);
 }
 
-.btn-icon-edit {
-    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+.actions .btn-delete {
+    background: #ef4444;
+    color: white;
 }
 
-.btn-icon-delete {
-    background: linear-gradient(45deg, #cb2d3e, #ef473a);
+.actions .btn-delete:hover {
+    background: #dc2626;
+    transform: scale(1.05);
 }
 
-/* Efecto hover para las filas */
-.claims-table tbody tr {
-    position: relative;
+.actions .btn-primary {
+    background: #2563eb;
+    color: white;
 }
 
-.claims-table tbody tr::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -5px;
-    height: 5px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+.actions .btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
 }
 
-.claims-table tbody tr:hover::after {
-    opacity: 1;
+.actions .btn-secondary {
+    background: #e0ecff;
+    color: #2563eb;
 }
 
-/* Modal styles mejorados */
+.actions .btn-secondary:hover {
+    background: #d1e3ff;
+    transform: translateY(-1px);
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -377,7 +335,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Estilos para formularios en el modal de edición */
 .form-control {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -407,7 +364,6 @@ textarea.form-control {
     resize: vertical;
 }
 
-/* Timeline mejorado */
 .timeline {
     position: relative;
     padding-left: 2rem;
@@ -465,7 +421,6 @@ textarea.form-control {
     line-height: 1.6;
 }
 
-/* Footer del modal */
 .modal-footer {
     padding: 1.5rem;
     background: #f8f9fa;
@@ -494,7 +449,6 @@ textarea.form-control {
     box-shadow: 0 8px 25px rgba(75, 108, 183, 0.4);
 }
 
-/* Animaciones */
 @keyframes modalSlideIn {
     from {
         transform: translateY(-30px);

@@ -1,1 +1,193 @@
-<p>sedes works!</p>
+<div class="container">
+  <h2 class="title">📋 Sedes Activas</h2>
+
+  <div class="actions">
+    <button class="btn-primary" (click)="abrirAgregarModal()">
+      <i class="fas fa-plus-circle"></i> Agregar
+    </button>
+    <button class="btn-secondary" [ngClass]="{'showing-inactive': !showingActive}" (click)="toggleShowInactive()">
+      <i class="fas fa-eye-slash"></i> {{ showingActive ? 'Ver Inactivas' : 'Ver Activas' }}
+    </button>
+  </div>
+
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>ID Organización</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sede of filteredSedes">
+          <td>{{ sede.name }}</td>
+          <td>{{ sede.address }}</td>
+          <td>{{ sede.phone }}</td>
+          <td>{{ sede.organizationId }}</td>
+          <td>{{sede.email}}</td>
+          <td>
+            <span [ngClass]="{'badge-active': sede.status === 'ACTIVE', 'badge-inactive': sede.status === 'INACTIVE'}">
+              {{ sede.status === 'ACTIVE' ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <ng-container *ngIf="showingActive; else inactiveActions">
+              <button class="btn-edit" title="Editar" (click)="selectEdit(sede)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-delete" title="Eliminar" (click)="eliminarSede(sede.branchId)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <ng-template #inactiveActions>
+              <button class="btn-success" title="Restaurar" (click)="restoreSede(sede.branchId)">
+                <i class="fas fa-redo-alt"></i> Restore
+              </button>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para editar Sede -->
+<div class="modal-backdrop" *ngIf="selectedSede">
+  <div class="modal">
+    <h3>Editar Sede</h3>
+    <form (ngSubmit)="guardarCambios()" #editForm="ngForm">
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="selectedSede.name" name="name" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #name="ngModel"/>
+        <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="validation-error">
+          <div *ngIf="name?.errors?.['required']">
+            El Nombre es requerido.
+          </div>
+          <div *ngIf="name?.errors?.['pattern']">
+            Solo se permiten letras, espacios, Ñ/ñ y tildes.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Dirección:</label>
+        <input type="text" [(ngModel)]="selectedSede.address" name="address" required #address="ngModel"/>
+        <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="validation-error">
+          <div *ngIf="address?.errors?.['required']">
+            La Dirección es requerida.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono:</label>
+        <input type="text" [(ngModel)]="selectedSede.phone" name="phone" required pattern="^9\d{8}$" #phone="ngModel"/>
+        <div *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)" class="validation-error">
+          <div *ngIf="phone?.errors?.['required']">
+            El Teléfono es requerido.
+          </div>
+          <div *ngIf="phone?.errors?.['pattern']">
+            El teléfono debe empezar con 9 y tener 9 dígitos.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" [(ngModel)]="selectedSede.email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" #email="ngModel"/>
+        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="validation-error">
+          <div *ngIf="email?.errors?.['required']">
+            El Email es requerido.
+          </div>
+          <div *ngIf="email?.errors?.['pattern']">
+            Ingrese un formato de email válido.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ID Organización:</label>
+        <input type="text" [(ngModel)]="selectedSede.organizationId" name="organizationId" required #organizationId="ngModel"/>
+        <div *ngIf="organizationId?.invalid && (organizationId?.dirty || organizationId?.touched)" class="validation-error">
+          <div *ngIf="organizationId?.errors?.['required']">
+            El ID de Organización es requerido.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" [disabled]="editForm.invalid">Guardar</button>
+        <button type="button" class="btn-secondary" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para agregar Sede -->
+<div class="modal-backdrop" *ngIf="showAddModal">
+  <div class="modal">
+    <h3>Agregar Sede</h3>
+    <form (ngSubmit)="agregarSede()" #addForm="ngForm">
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="newSede.name" name="name" required pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*" #name="ngModel" />
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="validation-error">
+          <div *ngIf="name.errors?.['required']">
+            El Nombre es requerido.
+          </div>
+          <div *ngIf="name.errors?.['pattern']">
+            Solo se permiten letras, espacios, Ñ/ñ y tildes.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Dirección:</label>
+        <input type="text" [(ngModel)]="newSede.address" name="address" required #address="ngModel"/>
+        <div *ngIf="address.invalid && (address.dirty || address.touched)" class="validation-error">
+          <div *ngIf="address.errors?.['required']">
+            La Dirección es requerida.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Teléfono:</label>
+        <input type="text" [(ngModel)]="newSede.phone" name="phone" required pattern="^9\d{8}$" #phone="ngModel"/>
+        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="validation-error">
+          <div *ngIf="phone.errors?.['required']">
+            El Teléfono es requerido.
+          </div>
+          <div *ngIf="phone.errors?.['pattern']">
+            El teléfono debe empezar con 9 y tener 9 dígitos.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" [(ngModel)]="newSede.email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" #email="ngModel" />
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation-error">
+          <div *ngIf="email.errors?.['required']">
+            El Email es requerido.
+          </div>
+          <div *ngIf="email.errors?.['pattern']">
+            Ingrese un formato de email válido.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ID Organización:</label>
+        <input type="text" [(ngModel)]="newSede.organizationId" name="organizationId" required #organizationId="ngModel"/>
+        <div *ngIf="organizationId.invalid && (organizationId.dirty || organizationId.touched)" class="validation-error">
+          <div *ngIf="organizationId.errors?.['required']">
+            El ID de Organización es requerido.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" [disabled]="addForm.invalid">Guardar</button>
+        <button type="button" class="btn-secondary" (click)="cancelarAgregar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

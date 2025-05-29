@@ -4,11 +4,12 @@ import { organization } from '../../shared/Organization';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import { DashboardComponent } from "../dashboard/dashboard.component";
 
 @Component({
   selector: 'app-organization',
   standalone: true,
-  imports: [NgFor , CommonModule , FormsModule],
+  imports: [NgFor, CommonModule, FormsModule],
   templateUrl: './organization.component.html',
   styleUrl: './organization.component.css'
 })
@@ -93,6 +94,39 @@ export class OrganizationComponent implements OnInit{
             Swal.fire(
               'Error!',
               'Hubo un error al eliminar el registro.',
+              'error'
+            );
+          }
+        );
+      }
+    });
+  }
+
+  restaurarOrganizacion(id: string) {
+    Swal.fire({
+      title: '¿Estás seguro de restaurar?',
+      text: "El registro volverá a estar activo.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, restaurar!'
+    }).then((result: SweetAlertResult) => {
+      if (result.isConfirmed) {
+        this.service.activateOrganization(id).subscribe(
+          () => {
+            this.getOrganization();
+            Swal.fire(
+              'Restaurado!',
+              'El registro ha sido restaurado.',
+              'success'
+            );
+          },
+          (error) => {
+            console.error('Error al restaurar', error);
+            Swal.fire(
+              'Error!',
+              'Hubo un error al restaurar el registro.',
               'error'
             );
           }

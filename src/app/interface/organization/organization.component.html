@@ -36,19 +36,25 @@
               </span>
           </td>
           <td>
-            <button class="btn-edit" title="Editar" (click)="selectEdit(org)">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-delete" title="Eliminar" (click)="eliminarOrganizacion(org.id)">
-              <i class="fas fa-trash-alt"></i>
-            </button>
+            <ng-container *ngIf="showingActive; else inactiveActions">
+              <button class="btn-edit" title="Editar" (click)="selectEdit(org)">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-delete" title="Eliminar" (click)="eliminarOrganizacion(org.id)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </ng-container>
+            <ng-template #inactiveActions>
+              <button class="btn-success" title="Restaurar" (click)="restaurarOrganizacion(org.id)">
+                <i class="fas fa-redo-alt"></i> Restore
+              </button>
+            </ng-template>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
 <!-- Modal para editar -->
 <div class="modal-backdrop" *ngIf="selectedOrg">
   <div class="modal">
@@ -166,4 +172,3 @@
     </form>
   </div>
 </div>
-  

@@ -24,9 +24,17 @@ export class OrganizationService {
   deleteOrganization(id: string): Observable<any> {
     return this.http.patch(`${this.baseUrl}/organizations/${id}/desactivate`, {});
   }
+
+  restoreOrganization(id: string): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/organizations/${id}/activate`, {});
+  }
   
 
   createOrganization(org: organization): Observable<organization> {
     return this.http.post<organization>(`${this.baseUrl}/organizations`, org);
+  }
+
+  activateOrganization(id: string): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/organizations/${id}/activate`, {});
   }
 }
