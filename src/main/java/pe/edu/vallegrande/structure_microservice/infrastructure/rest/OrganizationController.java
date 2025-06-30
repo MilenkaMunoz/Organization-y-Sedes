@@ -1,55 +1,61 @@
 package pe.edu.vallegrande.structure_microservice.infrastructure.rest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.vallegrande.structure_microservice.domain.models.Organization;
-import pe.edu.vallegrande.structure_microservice.infrastructure.dto.request.OrganizationCreateRequest;
-import pe.edu.vallegrande.structure_microservice.application.services.OrganizationService;
+import pe.edu.vallegrande.structure_microservice.domain.models.Street;
+import pe.edu.vallegrande.structure_microservice.domain.models.Zone;
+import pe.edu.vallegrande.structure_microservice.infrastructure.dto.request.OrganizationRequest;
+import pe.edu.vallegrande.structure_microservice.infrastructure.dto.response.OrganizationResponse;
+import pe.edu.vallegrande.structure_microservice.infrastructure.repository.StreetRepository;
+import pe.edu.vallegrande.structure_microservice.infrastructure.repository.ZoneRepository;
+import pe.edu.vallegrande.structure_microservice.infrastructure.service.OrganizationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-@CrossOrigin("*")
+
 @RestController
 @RequestMapping("/api/organizations")
 @RequiredArgsConstructor
 public class OrganizationController {
 
     private final OrganizationService organizationService;
+    private final ZoneRepository zoneRepository;
+    private final StreetRepository streetRepository;
+
+    @PostMapping
+    public Mono<OrganizationResponse> create(@RequestBody OrganizationRequest request) {
+        return organizationService.create(request);
+    }
 
     @GetMapping
-    public Flux<Organization> getAll() {
-        return organizationService.getAll();
+    public Flux<OrganizationResponse> findAll() {
+        return organizationService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Mono<Organization> getById(@PathVariable String id) {
-        return organizationService.getById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Organization> create(@RequestBody OrganizationCreateRequest request) {
-        return organizationService.save(request);
+    public Mono<OrganizationResponse> findById(@PathVariable String id) {
+        return organizationService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Mono<Organization> update(@PathVariable String id, @RequestBody Organization organization) {
-        return organizationService.update(id, organization);
+    public Mono<OrganizationResponse> update(@PathVariable String id, @RequestBody OrganizationRequest request) {
+        return organizationService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> delete(@PathVariable String id) {
         return organizationService.delete(id);
     }
 
-    @PatchMapping("/{id}/activate")
-    public Mono<Organization> activate(@PathVariable String id) {
-        return organizationService.activate(id);
+    // 🔹 Endpoint 1: Organización con zonas y calles (ya está cubierto por findAll si usas DTO completo)
+    @GetMapping("/full")
+    public Flux<OrganizationResponse> getFullStructure() {
+        return organizationService.findAll();
     }
 
-    @PatchMapping("/{id}/desactivate")
-    public Mono<Organization> deactivate(@PathVariable String id) {
-        return organizationService.deactivate(id);
+    // 🔹 Endpoint 2: Calles de una organización
+    @GetMapping("/{orgId}/streets")
+    public Flux<Street> getStreetsByOrganization(@PathVariable String orgId) {
+        return zoneRepository.findAllByOrganizationId(orgId)
+                .flatMap(zone -> streetRepository.findAllByZoneId(zone.getZoneId()));
     }
 }

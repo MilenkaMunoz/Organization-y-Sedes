@@ -1,12 +1,13 @@
 package pe.edu.vallegrande.structure_microservice.infrastructure.dto.request;
 
+
 import lombok.Data;
 
 @Data
-public class BranchCreateRequest {
-    private String name;
+public class OrganizationRequest {
+    private String organizationCode;
+    private String organizationName;
+    private String legalRepresentative;
     private String address;
     private String phone;
-    private String email;
-    private String organizationId;
 }
