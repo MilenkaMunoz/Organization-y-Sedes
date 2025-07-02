@@ -11,7 +11,7 @@ import pe.edu.vallegrande.structure_microservice.infrastructure.repository.ZoneR
 import pe.edu.vallegrande.structure_microservice.infrastructure.service.OrganizationService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/organizations")
 @RequiredArgsConstructor

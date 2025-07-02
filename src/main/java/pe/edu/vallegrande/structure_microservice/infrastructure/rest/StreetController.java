@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/streets")
 @RequiredArgsConstructor
